@@ -6,18 +6,11 @@ import java.util.List;
 public class App {
   public static void main(String[] args) throws Exception {
 
-    // fazer uma conexão HTTP e buscar os top 250 filmes
+    API api = API.NASA;
+    // API api = API.IMDB_TOP_MOVIES;
 
-    // Top 10 Movies
-    // String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
-
-    // Most popular videos
-    // String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularMovies.json";
-    // ExtratorDeConteudo extrator = new ExtratorDeConteudoDoIMDB();
-
-    // Nasa
-    String url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&start_date=2022-06-12&end_date=2022-06-14";
-    ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();
+    String url = api.getUrl();
+    ExtratorDeConteudo extrator = api.getExtrator();
 
     var http = new ClienteHttp();
     String json = http.buscaDados(url);
@@ -35,12 +28,12 @@ public class App {
 
       Conteudo conteudo = conteudos.get(i);
 
-      String nomeArquivo = "figurinhas/" + conteudo.getTitulo().replaceAll(" ", "_") + ".png";
-      InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
+      String nomeArquivo = "figurinhas/" + conteudo.titulo().replaceAll(" ", "_") + ".png";
+      InputStream inputStream = new URL(conteudo.urlImagem()).openStream();
 
       geradora.cria(inputStream, nomeArquivo);
 
-      System.out.println("\u001b[1mTítulo:\u001b[m " + conteudo.getTitulo());
+      System.out.println("\u001b[1mTítulo:\u001b[m " + conteudo.titulo());
       System.out.println();
     }
   }
